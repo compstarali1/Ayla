@@ -217,17 +217,36 @@
             box-shadow: 0 0 10px rgba(233, 30, 99, 0.6);
         }
 
-        /* Responsive */
+        /* === PAGE-SPECIFIC VISITOR COUNTER — STARTS FROM 1 === */
+        .counter-box {
+            position: fixed;
+            bottom: 40px;
+            left: 30px;
+            z-index: 999999;
+            background: #220820;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #597CFF;
+            box-shadow: 2px 5px 10px rgba(46,160,67,0.3);
+        }
+        .counter-img {
+            vertical-align: middle;
+            height: 22px;
+            width: auto;
+            display: block;
+        }
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .subtitle { font-size: 1.2rem; }
-            .button-container { align-items: center; margin-right: 0; }
-            .audio-btn { font-size: 1.5rem; padding: 20px 40px; min-width: 260px; }
-            .controls { gap: 15px; flex-wrap: wrap; }
+            .counter-box { bottom: 20px; left: 15px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- === PAGE-SPECIFIC COUNTER — UNIQUE ID, STARTS AT 1 === -->
+    <div class="counter-box">
+        <img src="https://visitor-badge.laobi.icu/badge?page_id=compstarali1.MySweetheart-Alya-PageOnly&title=Visited&color=2ea043&background=24292f" 
+             class="counter-img" alt="Page Visit Count">
+    </div>
 
     <!-- Background Image -- bg.jpg -->
     <div class="overlay"></div>
@@ -283,14 +302,12 @@
         const playPauseBtn = document.getElementById('playPauseBtn');
         let currentAudioSrc = '';
 
-        // Play selected audio file
         function playAudio(src) {
             audioPlayer.src = src;
             currentAudioSrc = src;
             audioPlayer.play().catch(e => console.log('Playback prevented:', e));
         }
 
-        // Toggle Play/Pause
         function togglePlayPause() {
             if (audioPlayer.paused) {
                 audioPlayer.play();
@@ -299,22 +316,18 @@
             }
         }
 
-        // Skip back 10s
         function skipBack() {
             audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
         }
 
-        // Skip forward 10s
         function skipForward() {
             audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 10);
         }
 
-        // Set volume
         function setVolume(value) {
             audioPlayer.volume = value;
         }
 
-        // Seek from progress bar click
         function seekAudio(event) {
             const progressBar = document.getElementById('progressBar');
             const clickX = event.offsetX;
@@ -323,7 +336,6 @@
             audioPlayer.currentTime = seekTime;
         }
 
-        // Format time to MM:SS
         function formatTime(seconds) {
             if (isNaN(seconds)) return '0:00';
             const mins = Math.floor(seconds / 60);
@@ -331,19 +343,16 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Update progress bar and time display
         audioPlayer.addEventListener('timeupdate', () => {
             const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             progressFill.style.width = percent + '%';
             currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
         });
 
-        // Load duration when metadata is ready
         audioPlayer.addEventListener('loadedmetadata', () => {
             durationEl.textContent = formatTime(audioPlayer.duration);
         });
 
-        // Update play/pause button icon
         audioPlayer.addEventListener('play', () => {
             playPauseBtn.textContent = '⏸';
         });
@@ -351,7 +360,6 @@
             playPauseBtn.textContent = '▶';
         });
 
-        // Reset progress when audio ends
         audioPlayer.addEventListener('ended', () => {
             progressFill.style.width = '0%';
             playPauseBtn.textContent = '▶';
